@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="MAIN" Id="{1185f6f7-1cbe-454c-8e29-f938133bda08}" SpecialFunc="None">
+    <Declaration><![CDATA[// /////////////////////////////////////////////////////////////////////////////
+// ///                                                                       ///
+// ///    SYSTEM:     AIRPORT EMERGENCY DOOR                                 ///
+// ///                                                                       ///
+// ///                                                                       ///
+// ///    SUBJECT:       AUTOMATION AND INDUSTRIAL INSTRUMENTATION           ///
+// ///    DATE:       2026-04-01                                             ///
+// ///                                                                       ///
+// ///    MADE BY:    [01] Iñigo Bañuls                                      ///
+// ///                [02] Lander Nieto                                      ///
+// ///                [03] Ruud Rohan                                        ///
+// ///                                                                       ///
+// /////////////////////////////////////////////////////////////////////////////
+
+
+
+PROGRAM MAIN
+VAR
+	
+	stSystem	:	sysType;                  // SYSTEM DATA STRUCT
+	EMERGENCY_HDL	: FB_EMERGENCY_SYS;		  // EMERGENCY HANDLING FUNCTION BLOCK	
+
+
+END_VAR
+
+
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+EMERGENCY_HDL(stSystem := stSystem);
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

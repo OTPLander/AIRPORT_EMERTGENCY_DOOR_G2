@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="sysOutputs" Id="{50a3c6c6-ca5f-40b2-876c-d6ede982efb7}">
+    <Declaration><![CDATA[TYPE sysOutputs :
+STRUCT
+	
+	oAlarm		AT %Q*: BOOL;
+	oCloseDoor	AT %Q*: BOOL;
+	oOpenDoor	AT %Q*: BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

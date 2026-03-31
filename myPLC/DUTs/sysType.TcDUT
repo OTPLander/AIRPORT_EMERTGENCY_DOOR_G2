@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="sysType" Id="{84e6f939-45d7-4fef-b3df-688fb99d31ae}">
+    <Declaration><![CDATA[TYPE sysType :
+STRUCT
+	state: sysState;
+	
+	timersCounters: sysTimersCounters;
+
+	transitions: sysTransitions;
+	
+	inputs: sysInputs;
+	outputs: sysOutputs;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

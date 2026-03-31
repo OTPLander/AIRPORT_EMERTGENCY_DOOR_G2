@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="sysState" Id="{f41f0738-eb69-4151-baf8-00099c6ae837}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE sysState :
+(
+    stDisconnected := 0,
+    stOpening := 1,
+    stClosing := 2,
+    stWaitingRaspberry := 3,
+    stRaspberryOk := 4,
+    stAlarmOpening := 5,
+    stAlarm := 6,
+    stAlarmClosing := 7,
+    stFaceDetectionAlarmOpening := 8,
+    stFaceDetectionAlarm := 9,
+    stFaceDetectionAlarmClosing := 10,
+    stConfigOpening := 11,
+    stConfig := 12,
+    stConfigClosing := 13,
+    stRaspberryFailOpening := 14,
+    stRaspberryFail := 15
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

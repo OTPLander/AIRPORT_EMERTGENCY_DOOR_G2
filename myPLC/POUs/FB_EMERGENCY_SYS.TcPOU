@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_EMERGENCY_SYS" Id="{037855c0-4683-4fd0-aa20-772e94d3b895}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EMERGENCY_SYS
+VAR_IN_OUT
+	stSystem: sysType;         // ALLOW CHILD METHODS TO ACCESS DATA
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+CASE stSystem.state OF
+
+    // ==========================================
+    // INITIAL STATES
+    // ==========================================
+    sysState.stDisconnected:
+        IF stSystem.transitions.T1 THEN
+            stSystem.state := sysState.stClosing;
+        END_IF
+
+    sysState.stOpening:
+        IF stSystem.transitions.T2 THEN
+            stSystem.state := sysState.stDisconnected;
+        END_IF
+
+    sysState.stClosing:
+        IF stSystem.transitions.T3 THEN
+            stSystem.state := sysState.stWaitingRaspberry;
+        END_IF
+
+    // ==========================================
+    // WAIT AND RASPBERRY CONNECTION
+    // ==========================================
+    sysState.stWaitingRaspberry:
+        IF stSystem.transitions.T4 THEN
+            stSystem.state := sysState.stOpening;
+        ELSIF stSystem.transitions.T7 THEN
+            stSystem.state := sysState.stAlarmOpening;
+        ELSIF stSystem.transitions.T8 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmOpening;
+        ELSIF stSystem.transitions.T9 THEN
+            stSystem.state := sysState.stConfigOpening;
+        ELSIF stSystem.transitions.T5 THEN
+            stSystem.state := sysState.stRaspberryFailOpening;
+        ELSIF stSystem.transitions.T6 THEN
+            stSystem.state := sysState.stRaspberryOk;
+        END_IF
+
+    sysState.stRaspberryOk:
+        IF stSystem.transitions.T10 THEN
+            stSystem.state := sysState.stOpening;
+        ELSIF stSystem.transitions.T12 THEN
+            stSystem.state := sysState.stAlarmOpening;
+        ELSIF stSystem.transitions.T13 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmOpening;
+        ELSIF stSystem.transitions.T14 THEN
+            stSystem.state := sysState.stConfigOpening;
+        ELSIF stSystem.transitions.T11 THEN
+            stSystem.state := sysState.stWaitingRaspberry;
+        END_IF
+
+    // ==========================================
+    // DEFAULT ALARM
+    // ==========================================
+    sysState.stAlarmOpening:
+        IF stSystem.transitions.T15 THEN
+            stSystem.state := sysState.stAlarm;
+        END_IF
+
+    sysState.stAlarm:
+        IF stSystem.transitions.T16 THEN
+            stSystem.state := sysState.stAlarmClosing;
+        END_IF
+
+    sysState.stAlarmClosing:
+        IF stSystem.transitions.T17 THEN
+            stSystem.state := sysState.stWaitingRaspberry;
+        END_IF
+
+    // ==========================================
+    // FACIAL DETECTION ALARM
+    // ==========================================
+    sysState.stFaceDetectionAlarmOpening:
+        IF stSystem.transitions.T18 THEN
+            stSystem.state := sysState.stFaceDetectionAlarm;
+        END_IF
+
+    sysState.stFaceDetectionAlarm:
+        IF stSystem.transitions.T19 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmClosing;
+        END_IF
+
+    sysState.stFaceDetectionAlarmClosing:
+        IF stSystem.transitions.T20 THEN
+            stSystem.state := sysState.stWaitingRaspberry;
+        END_IF
+
+    // ==========================================
+    // TEST MODE
+    // ==========================================
+    sysState.stConfigOpening:
+        IF stSystem.transitions.T21 THEN
+            stSystem.state := sysState.stConfig;
+        END_IF
+
+    sysState.stConfig:
+        IF stSystem.transitions.T22 THEN
+            stSystem.state := sysState.stConfigClosing;
+        END_IF
+
+    sysState.stConfigClosing:
+        IF stSystem.transitions.T23 THEN
+            stSystem.state := sysState.stWaitingRaspberry;
+        END_IF
+
+    // ==========================================
+    // RASPBERRY PI ERROR
+    // ==========================================
+    sysState.stRaspberryFailOpening:
+        IF stSystem.transitions.T24 THEN
+            stSystem.state := sysState.stRaspberryFail;
+        END_IF
+
+    sysState.stRaspberryFail:
+        IF stSystem.transitions.T25 THEN
+            stSystem.state := sysState.stDisconnected;
+        END_IF
+
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="mOutputs" Id="{83f6b582-9dbd-4b31-83b6-b11bcde56274}">
+      <Declaration><![CDATA[METHOD mOutputs
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mTransitions" Id="{1b7dd8b6-9891-4637-828c-17df8373d614}">
+      <Declaration><![CDATA[METHOD mTransitions
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// ==============================================================================
+// Method: mTransitions
+// Description: Evaluates and triggers the boolean flags for state transitions
+//              based on the current state and specific logical conditions.
+// ==============================================================================
+
+// Transition T1: FROM stDisconnected TO stClosing WHEN iSwitch is TRUE
+stSystem.transitions.T1 := (stSystem.state = sysState.stDisconnected) AND (stSystem.inputs.iSwitch = TRUE);
+
+// Transition T2: FROM stOpening TO stDisconnected WHEN doorOpenTimer is done
+stSystem.transitions.T2 := (stSystem.state = sysState.stOpening) AND (stSystem.timersCounters.doorOpenTimer.Q = TRUE);
+
+// Transition T3: FROM stClosing TO stWaitingRaspberry WHEN doorCloseTimer is done
+stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.timersCounters.doorCloseTimer.Q = TRUE);
+
+// Transition T4: FROM stWaitingRaspberry TO stOpening WHEN iSwitch is FALSE
+stSystem.transitions.T4 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iSwitch = FALSE);
+
+// ... you must continue this pattern up to T25 following the transition table.]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
