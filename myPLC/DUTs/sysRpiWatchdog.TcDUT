@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="sysRpiWatchdog" Id="{19511920-f9ff-473c-b44d-ae629e122103}">
+    <Declaration><![CDATA[TYPE sysRpiWatchdog :
+STRUCT
+
+	iHeartbeat      : INT; // RECEIVED VALUE
+	iHeartbeatEcho	: INT;  // VALUE TO SEND
+	
+	iRPiFail	 AT %I*: BOOL	:= FALSE;
+
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

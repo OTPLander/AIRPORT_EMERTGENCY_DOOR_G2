@@ -22,6 +22,7 @@ VAR
 	
 	stSystem	:	sysType;                  // SYSTEM DATA STRUCT
 	EMERGENCY_HDL	: FB_EMERGENCY_SYS;		  // EMERGENCY HANDLING FUNCTION BLOCK	
+	RPi_WATCHDOG	: FB_RPiWATCHDOG;
 
 
 END_VAR
@@ -33,7 +34,7 @@ END_VAR
       <ST><![CDATA[
 
 EMERGENCY_HDL(stSystem := stSystem);
-
+RPi_WATCHDOG();
 ]]></ST>
     </Implementation>
   </POU>

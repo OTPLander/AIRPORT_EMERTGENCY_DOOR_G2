@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_EMERGENCY_SYS" Id="{037855c0-4683-4fd0-aa20-772e94d3b895}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EMERGENCY_SYS
 VAR_IN_OUT
@@ -167,14 +167,14 @@ stSystem.transitions.T4 := (stSystem.state = sysState.stWaitingRaspberry) AND (s
 stSystem.transitions.T5 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.timersCounters.rpiWaitTimer.Q = TRUE);
 
 // T6: FROM stWaitingRaspberry TO stRaspberryOk WHEN RPi pong received
-stSystem.transitions.T6 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iRPiPong = TRUE);
+stSystem.transitions.T6 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.RpiWatchdog.iRPiFail = FALSE);
 
 // T7: FROM stWaitingRaspberry TO stAlarmOpening WHEN alarm button pressed
 stSystem.transitions.T7 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iAlarmButton = FALSE);
 
 // T8: FROM stWaitingRaspberry TO stFaceDetectionAlarmOpening WHEN face detected
 stSystem.transitions.T8 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iFacialDetec = TRUE);
-
+ 	
 // T9: FROM stWaitingRaspberry TO stConfigOpening WHEN test button pressed
 stSystem.transitions.T9 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iTestButton = TRUE);
 
@@ -227,18 +227,5 @@ stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) A
 stSystem.transitions.T25 := (stSystem.state = sysState.stRaspberryFail) AND (stSystem.inputs.iSwitch = FALSE);]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_EMERGENCY_SYS">
-      <LineId Id="3" Count="118" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_EMERGENCY_SYS.mOutputs">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_EMERGENCY_SYS.mTransitions">
-      <LineId Id="3" Count="17" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="26" Count="61" />
-      <LineId Id="24" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

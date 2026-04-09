@@ -24,6 +24,9 @@
     <Compile Include="DUTs\sysOutputs.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\sysRpiWatchdog.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\sysState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +43,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_EMERGENCY_SYS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_RPi_WATCHDOG.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">

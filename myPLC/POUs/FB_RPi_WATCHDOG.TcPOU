@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_RPi_WATCHDOG" Id="{6d7bce53-8afd-42cc-a4e4-b4f3a0647c22}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RPi_WATCHDOG
+VAR
+    //iHeartbeat      : INT; // RECEIVED VALUE
+    iHeartbeat_Prev : INT; // PREV VALUE REGISTRY
+    
+    fbWatchdog      : TON; // WATCHDOG TIMER
+    bRaspberryFail  : BOOL; // ERROR FLAG TO BE SUBSTITUDED
+	
+	//iHeartbeatEcho	: INT;  // VALUE TO SEND
+END_VAR
+
+VAR_IN_OUT
+	stSystem: sysType;       
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// 1. Timer Init
+// If new received value equals value received before, no new value was received
+// This controls IN port. While the values are equal, it counts.
+fbWatchdog(IN := (stSystem.RPiWatchdog.iHeartbeat = iHeartbeat_Prev), PT := T#3S); 
+
+
+// If timer runs out
+IF fbWatchdog.Q THEN
+    bRaspberryFail := TRUE; 
+ELSE
+    bRaspberryFail := FALSE;
+END_IF
+
+// 3. Echo and mem update
+stSystem.RPiWatchdog.iHeartbeatEcho := stSystem.RPiWatchdog.iHeartbeat;       // Echoes the message to the RPi
+iHeartbeat_Prev := stSystem.RPiWatchdog.iHeartbeat;       // Value is logged
+stSystem.RPiWatchdog.iRPiFail := bRaspberryFail;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

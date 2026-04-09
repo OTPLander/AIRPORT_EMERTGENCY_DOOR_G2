@@ -6,7 +6,7 @@ STRUCT
 	
 	
 	iSwitch		 AT %I*: BOOL;
-	iRPiPong	 AT %I*: BOOL;
+
 	iAlarmButton AT %I*: BOOL;
 	iFacialDetec AT %I*: BOOL;
 	iTestButton	 AT %I*: BOOL;

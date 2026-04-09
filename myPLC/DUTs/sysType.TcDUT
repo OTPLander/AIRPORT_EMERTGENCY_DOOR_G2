@@ -12,6 +12,8 @@ STRUCT
 	inputs: sysInputs;
 	outputs: sysOutputs;
 	
+	RPiWatchdog: sysRpiWatchdog;
+	
 END_STRUCT
 END_TYPE
 ]]></Declaration>
