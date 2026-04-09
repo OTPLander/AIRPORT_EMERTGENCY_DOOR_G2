@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.16">
   <POU Name="FB_EMERGENCY_SYS" Id="{037855c0-4683-4fd0-aa20-772e94d3b895}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EMERGENCY_SYS
 VAR_IN_OUT
@@ -137,8 +137,9 @@ END_VAR
       </Implementation>
     </Method>
     <Method Name="mTransitions" Id="{1b7dd8b6-9891-4637-828c-17df8373d614}">
-      <Declaration><![CDATA[METHOD mTransitions
-VAR_INPUT
+      <Declaration><![CDATA[METHOD mTransitions : BOOL
+VAR_IN_OUT
+    stSystem: sysType;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -160,8 +161,84 @@ stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.t
 // Transition T4: FROM stWaitingRaspberry TO stOpening WHEN iSwitch is FALSE
 stSystem.transitions.T4 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iSwitch = FALSE);
 
-// ... you must continue this pattern up to T25 following the transition table.]]></ST>
+// ... you must continue this pattern up to T25 following the transition table.
+
+// T5: FROM stWaitingRaspberry TO stRaspberryFailOpening WHEN rpiWaitTimer done
+stSystem.transitions.T5 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.timersCounters.rpiWaitTimer.Q = TRUE);
+
+// T6: FROM stWaitingRaspberry TO stRaspberryOk WHEN RPi pong received
+stSystem.transitions.T6 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iRPiPong = TRUE);
+
+// T7: FROM stWaitingRaspberry TO stAlarmOpening WHEN alarm button pressed
+stSystem.transitions.T7 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iAlarmButton = FALSE);
+
+// T8: FROM stWaitingRaspberry TO stFaceDetectionAlarmOpening WHEN face detected
+stSystem.transitions.T8 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iFacialDetec = TRUE);
+
+// T9: FROM stWaitingRaspberry TO stConfigOpening WHEN test button pressed
+stSystem.transitions.T9 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iTestButton = TRUE);
+
+// T10: FROM stRaspberryOk TO stOpening WHEN iSwitch is FALSE
+stSystem.transitions.T10 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.inputs.iSwitch = FALSE);
+
+// T11: FROM stRaspberryOk TO stWaitingRaspberry WHEN rpiPingTimer done
+stSystem.transitions.T11 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.timersCounters.rpiPingTimer.Q = TRUE);
+
+// T12: FROM stRaspberryOk TO stAlarmOpening WHEN alarm button pressed
+stSystem.transitions.T12 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.inputs.iAlarmButton = FALSE);
+
+// T13: FROM stRaspberryOk TO stFaceDetectionAlarmOpening WHEN face detected
+stSystem.transitions.T13 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.inputs.iFacialDetec = TRUE);
+
+// T14: FROM stRaspberryOk TO stConfigOpening WHEN test button pressed
+stSystem.transitions.T14 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.inputs.iTestButton = TRUE);
+
+// T15: FROM stAlarmOpening TO stAlarm WHEN doorOpenTimer done
+stSystem.transitions.T15 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.timersCounters.doorOpenTimer.Q = TRUE);
+
+// T16: FROM stAlarm TO stAlarmClosing WHEN test button AND alarm cleared
+stSystem.transitions.T16 := (stSystem.state = sysState.stAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+
+// T17: FROM stAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
+stSystem.transitions.T17 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.timersCounters.doorCloseTimer.Q = TRUE);
+
+// T18: FROM stFaceDetectionAlarmOpening TO stFaceDetectionAlarm WHEN doorOpenTimer done
+stSystem.transitions.T18 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.timersCounters.doorOpenTimer.Q = TRUE);
+
+// T19: FROM stFaceDetectionAlarm TO stFaceDetectionAlarmClosing WHEN test button AND alarm cleared
+stSystem.transitions.T19 := (stSystem.state = sysState.stFaceDetectionAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+
+// T20: FROM stFaceDetectionAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
+stSystem.transitions.T20 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.timersCounters.doorCloseTimer.Q = TRUE);
+
+// T21: FROM stConfigOpening TO stConfig WHEN doorOpenTimer done
+stSystem.transitions.T21 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.timersCounters.doorOpenTimer.Q = TRUE);
+
+// T22: FROM stConfig TO stConfigClosing WHEN test button pressed
+stSystem.transitions.T22 := (stSystem.state = sysState.stConfig) AND (stSystem.inputs.iTestButton = TRUE);
+
+// T23: FROM stConfigClosing TO stWaitingRaspberry WHEN doorCloseTimer done
+stSystem.transitions.T23 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.timersCounters.doorCloseTimer.Q = TRUE);
+
+// T24: FROM stRaspberryFailOpening TO stRaspberryFail WHEN doorOpenTimer done
+stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) AND (stSystem.timersCounters.doorOpenTimer.Q = TRUE);
+
+// T25: FROM stRaspberryFail TO stDisconnected WHEN iSwitch is FALSE
+stSystem.transitions.T25 := (stSystem.state = sysState.stRaspberryFail) AND (stSystem.inputs.iSwitch = FALSE);]]></ST>
       </Implementation>
     </Method>
+    <LineIds Name="FB_EMERGENCY_SYS">
+      <LineId Id="3" Count="118" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EMERGENCY_SYS.mOutputs">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EMERGENCY_SYS.mTransitions">
+      <LineId Id="3" Count="17" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="26" Count="61" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
   </POU>
 </TcPlcObject>
