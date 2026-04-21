@@ -22,8 +22,22 @@ VAR
 	
 	stSystem	:	sysType;                  // SYSTEM DATA STRUCT
 	EMERGENCY_HDL	: FB_EMERGENCY_SYS;		  // EMERGENCY HANDLING FUNCTION BLOCK	
-	RPi_WATCHDOG	: FB_RPiWATCHDOG;
+	RPi_WATCHDOG	: FB_RPi_WATCHDOG;
 
+
+// Atributos para exponer las variables al servidor OPC UA
+    {attribute 'OPC.UA.DA' := '1'}
+    aImageRxBuffer : ARRAY[0..99999] OF BYTE; // Buffer para recibir desde la RPi (Ej: 100 KB)
+    
+    {attribute 'OPC.UA.DA' := '1'}
+    aImageTxBuffer : ARRAY[0..99999] OF BYTE; // Buffer para enviar a la RPi
+    
+    // Variables de control (Handshake)
+    {attribute 'OPC.UA.DA' := '1'}
+    bRpiHasWritten : BOOL; // La RPi lo pone en TRUE cuando termina de enviar
+    
+    {attribute 'OPC.UA.DA' := '1'}
+    bPlcHasWritten : BOOL; // El PLC lo pone en TRUE cuando tiene una imagen lista para la RPi
 
 END_VAR
 
@@ -34,7 +48,7 @@ END_VAR
       <ST><![CDATA[
 
 EMERGENCY_HDL(stSystem := stSystem);
-RPi_WATCHDOG();
+RPi_WATCHDOG(stSystem := stSystem);
 ]]></ST>
     </Implementation>
   </POU>

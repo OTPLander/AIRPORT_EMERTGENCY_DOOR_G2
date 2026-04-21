@@ -129,11 +129,34 @@ END_CASE]]></ST>
     </Implementation>
     <Method Name="mOutputs" Id="{83f6b582-9dbd-4b31-83b6-b11bcde56274}">
       <Declaration><![CDATA[METHOD mOutputs
-VAR_INPUT
-END_VAR
-]]></Declaration>
+VAR_IN_OUT
+    stSystem: sysType;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[stSystem.outputs.oOpenDoor :=
+    (stSystem.state = sysState.stOpening) OR
+    (stSystem.state = sysState.stAlarmOpening) OR
+    (stSystem.state = sysState.stFaceDetectionAlarmOpening) OR
+    (stSystem.state = sysState.stConfigOpening) OR
+    (stSystem.state = sysState.stRaspberryFailOpening);
+
+// --- oCloseDoor: active in all Closing states ---
+stSystem.outputs.oCloseDoor :=
+    (stSystem.state = sysState.stClosing) OR
+    (stSystem.state = sysState.stAlarmClosing) OR
+    (stSystem.state = sysState.stFaceDetectionAlarmClosing) OR
+    (stSystem.state = sysState.stConfigClosing);
+
+// --- oAlarm: active during any alarm state (both alarm types, all sub-states) ---
+stSystem.outputs.oAlarm :=
+    (stSystem.state = sysState.stAlarmOpening) OR
+    (stSystem.state = sysState.stAlarm) OR
+    (stSystem.state = sysState.stAlarmClosing) OR
+    (stSystem.state = sysState.stFaceDetectionAlarmOpening) OR
+    (stSystem.state = sysState.stFaceDetectionAlarm) OR
+    (stSystem.state = sysState.stFaceDetectionAlarmClosing) OR
+(stSystem.state = sysState.stRaspberryFailOpening) OR
+(stSystem.state = sysState.stRaspberryFail);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mTransitions" Id="{1b7dd8b6-9891-4637-828c-17df8373d614}">

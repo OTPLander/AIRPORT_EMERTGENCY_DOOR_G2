@@ -16,6 +16,7 @@
     <Implicit_KindOfTask>{73da63fc-4160-47d6-a5a5-d81a899d4e0c}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{84083cf7-9c71-47b4-852e-de75d572fbc4}</Implicit_Jitter_Distribution>
     <LibraryReferences>{847daf6c-255a-456e-a7a4-21c53c8d724f}</LibraryReferences>
+    <Released>false</Released>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\sysInputs.TcDUT">
@@ -42,6 +43,9 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PlcTask_1.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_EMERGENCY_SYS.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -49,6 +53,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PWM.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
