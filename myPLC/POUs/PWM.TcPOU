@@ -4,27 +4,27 @@
     <Declaration><![CDATA[PROGRAM PWM
 VAR
     fbTimer : TON;
-    bAlarmaOut AT %Q* : BOOL;  // Esta variable la enlazas al canal del EL2008
+    bAlarmaOut AT %Q* : BOOL;  // EL2008 port
     
-    rVolumen : REAL := 0.0;   // "Volumen" (Duty Cycle) de 0.0 a 100.0 %
-    tPeriodo : TIME := T#20MS; // Frecuencia del PWM (20ms = 50Hz)
+    rVolumen : REAL := 0.0;   // "Volume" (Duty Cycle) from 0.0 to 100.0 %
+    tPeriodo : TIME := T#20MS; // PWM frequency (20ms = 50Hz)
     tTiempoAlto : TIME;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// 1. Calculamos cuánto tiempo debe estar encendida la salida
+      <ST><![CDATA[// 1. On time calculation
 tTiempoAlto := REAL_TO_TIME((rVolumen / 100.0) * TIME_TO_REAL(tPeriodo));
 
-// 2. Ejecutamos el temporizador que se reinicia a sí mismo cada ciclo
+// 2. Timer that resets each cycle
 fbTimer(IN:= NOT fbTimer.Q, PT:= tPeriodo);
 
-// 3. Lógica del PWM
+// 3. PWM Logic
 IF rVolumen <= 0.0 THEN
-    bAlarmaOut := FALSE; // Apagado por completo
+    bAlarmaOut := FALSE; // Power off
 ELSIF rVolumen >= 100.0 THEN
-    bAlarmaOut := TRUE;  // Encendido al máximo
+    bAlarmaOut := TRUE;  // Porwen on
 ELSE
-    // Si el tiempo transcurrido es menor al tiempo en alto, encendemos. Si no, apagamos.
+    // Elapsed time < up_time -> power on, else power off
     bAlarmaOut := (fbTimer.ET <= tTiempoAlto);
 END_IF]]></ST>
     </Implementation>
