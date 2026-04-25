@@ -47,7 +47,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{0BC24E2F-63E9-4D97-8436-7444818F97D7}" Name="myPLC" PrjFilePath="myPLC\myPLC.plcproj" TmcFilePath="myPLC\myPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" CopyTpyToTarget="false">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{12FF215E-DB99-94BD-61B9-69AB2F15CDB9}" TmcPath="myPLC\myPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{EBE0FA6D-E5E2-B995-D403-27B09F6B8D31}" TmcPath="myPLC\myPLC.tmc">
 					<Name>myPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -84,6 +84,10 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.stSystem.inputs.iReedSwitch</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.stSystem.RPiWatchdog.iRPiFail</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -92,7 +96,7 @@
 						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>PWM.bAlarmaOut</Name>
-							<Comment><![CDATA[ Esta variable la enlazas al canal del EL2008]]></Comment>
+							<Comment><![CDATA[ EL2008 port]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>

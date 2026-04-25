@@ -12,6 +12,7 @@ STRUCT
 	iTestButton	 AT %I*: BOOL;
 	
 	iReedSwitch	 AT %I*: BOOL;
+	iReedSwitch_rtrig : R_TRIG;
 	
 	
 END_STRUCT

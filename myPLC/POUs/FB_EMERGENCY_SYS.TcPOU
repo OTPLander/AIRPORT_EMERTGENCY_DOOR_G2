@@ -168,6 +168,8 @@ stSystem.outputs.oAlarm :=
       <Declaration><![CDATA[METHOD mTransitions : BOOL
 VAR_IN_OUT
     stSystem: sysType;
+	
+	
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -177,14 +179,16 @@ END_VAR
 //              based on the current state and specific logical conditions.
 // ==============================================================================
 
+stSystem.inputs.iReedSwitch_rtrig(CLK := stSystem.inputs.iReedSwitch); // Define R_TRIG CLK for Reed Switch
+
 // Transition T1: FROM stDisconnected TO stClosing WHEN iSwitch is TRUE
 stSystem.transitions.T1 := (stSystem.state = sysState.stDisconnected) AND (stSystem.inputs.iSwitch = TRUE);
 
 // Transition T2: FROM stOpening TO stDisconnected WHEN doorOpenTimer is done
-stSystem.transitions.T2 := (stSystem.state = sysState.stOpening) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T2 := (stSystem.state = sysState.stOpening) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // Transition T3: FROM stClosing TO stWaitingRaspberry WHEN doorCloseTimer is done
-stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // Transition T4: FROM stWaitingRaspberry TO stOpening WHEN iSwitch is FALSE
 stSystem.transitions.T4 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iSwitch = FALSE);
@@ -222,34 +226,34 @@ stSystem.transitions.T13 := (stSystem.state = sysState.stRaspberryOk) AND (stSys
 stSystem.transitions.T14 := (stSystem.state = sysState.stRaspberryOk) AND (stSystem.inputs.iTestButton = TRUE);
 
 // T15: FROM stAlarmOpening TO stAlarm WHEN doorOpenTimer done
-stSystem.transitions.T15 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T15 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T16: FROM stAlarm TO stAlarmClosing WHEN test button AND alarm cleared
 stSystem.transitions.T16 := (stSystem.state = sysState.stAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
 
 // T17: FROM stAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T17 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T17 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T18: FROM stFaceDetectionAlarmOpening TO stFaceDetectionAlarm WHEN doorOpenTimer done
-stSystem.transitions.T18 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T18 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T19: FROM stFaceDetectionAlarm TO stFaceDetectionAlarmClosing WHEN test button AND alarm cleared
 stSystem.transitions.T19 := (stSystem.state = sysState.stFaceDetectionAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
 
 // T20: FROM stFaceDetectionAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T20 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T20 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T21: FROM stConfigOpening TO stConfig WHEN doorOpenTimer done
-stSystem.transitions.T21 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T21 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T22: FROM stConfig TO stConfigClosing WHEN test button pressed
 stSystem.transitions.T22 := (stSystem.state = sysState.stConfig) AND (stSystem.inputs.iTestButton = TRUE);
 
 // T23: FROM stConfigClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T23 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T23 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T24: FROM stRaspberryFailOpening TO stRaspberryFail WHEN doorOpenTimer done
-stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) AND (stSystem.inputs.iReedSwitch = TRUE);
+stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
 
 // T25: FROM stRaspberryFail TO stDisconnected WHEN iSwitch is FALSE
 stSystem.transitions.T25 := (stSystem.state = sysState.stRaspberryFail) AND (stSystem.inputs.iSwitch = FALSE);

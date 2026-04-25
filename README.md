@@ -1,0 +1,1 @@
+To install server, simply run the "StartServer.cmd" file (on windows), or otherwise just run forge-1.18.2-40.2.1-installer.jar.
