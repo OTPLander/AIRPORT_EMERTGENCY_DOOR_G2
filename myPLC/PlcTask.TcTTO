@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<TcPlcObject Version="1.1.0.1">
   <Task Name="PlcTask" Id="{f31ddcca-80fa-4c13-9eaf-75e0ba56a1a9}">
     <!--CycleTime in micro seconds.-->
-    <CycleTime>1000</CycleTime>
-    <Priority>1</Priority>
+    <CycleTime>10000</CycleTime>
+    <Priority>20</Priority>
     <PouCall>
-      <Name>PWM</Name>
+      <Name>MAIN</Name>
     </PouCall>
     <TaskFBGuid>{f1b1b607-33d9-47fa-a99a-6bd956210bd5}</TaskFBGuid>
     <Fb_init>{063138cc-3204-4454-8e2c-8dea1c858e53}</Fb_init>
     <Fb_exit>{d547fc06-2073-4da0-aefa-213ba1774b6a}</Fb_exit>
     <CycleUpdate>{399c57c7-1681-4739-af40-f67b2b9da5dc}</CycleUpdate>
     <PostCycleUpdate>{1774b3ee-073b-4279-ae0c-ad74eaba8426}</PostCycleUpdate>
+    <ObjectProperties />
   </Task>
 </TcPlcObject>
