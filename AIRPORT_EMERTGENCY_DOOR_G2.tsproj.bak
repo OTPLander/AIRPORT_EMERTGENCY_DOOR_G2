@@ -47,7 +47,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{0BC24E2F-63E9-4D97-8436-7444818F97D7}" Name="myPLC" PrjFilePath="myPLC\myPLC.plcproj" TmcFilePath="myPLC\myPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" CopyTpyToTarget="false">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{12FF215E-DB99-94BD-61B9-69AB2F15CDB9}" TmcPath="myPLC\myPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{CF26BC90-6F89-18D5-6CD2-9B915B61E75B}" TmcPath="myPLC\myPLC.tmc">
 					<Name>myPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -84,6 +84,10 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.stSystem.inputs.iReedSwitch</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.stSystem.RPiWatchdog.iRPiFail</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -92,7 +96,7 @@
 						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>PWM.bAlarmaOut</Name>
-							<Comment><![CDATA[ Esta variable la enlazas al canal del EL2008]]></Comment>
+							<Comment><![CDATA[ EL2008 port]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>
@@ -124,7 +128,7 @@
 			</Project>
 		</Plc>
 		<Io>
-			<Device Id="2" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="26.119.23.145.3.1" RemoteName="Device 2 (EtherCAT)" InfoImageId="3">
+			<Device Id="2" Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="26.119.23.145.3.1" RemoteName="Device 2 (EtherCAT)" InfoImageId="3">
 				<Name>Device 2 (EtherCAT)</Name>
 				<AddressInfo>
 					<Pnp>
@@ -576,7 +580,6 @@
 		</Io>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-2001-0850-0020-500820000403}" Id="#x02030010"/>
 		<OwnerA Name="TIPC^myPLC^myPLC Instance">
 			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2008)">
 				<Link VarA="PlcTask Outputs^PWM.bAlarmaOut" VarB="Channel 6^Output"/>

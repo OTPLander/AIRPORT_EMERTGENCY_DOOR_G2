@@ -3,7 +3,7 @@
   <DUT Name="sysType" Id="{84e6f939-45d7-4fef-b3df-688fb99d31ae}">
     <Declaration><![CDATA[TYPE sysType :
 STRUCT
-	state: sysState;
+	state: sysState ;
 	
 	timersCounters: sysTimersCounters;
 
