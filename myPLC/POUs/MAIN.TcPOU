@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="MAIN" Id="{1185f6f7-1cbe-454c-8e29-f938133bda08}" SpecialFunc="None">
     <Declaration><![CDATA[// /////////////////////////////////////////////////////////////////////////////
 // ///                                                                       ///
@@ -19,37 +19,48 @@
 
 PROGRAM MAIN
 VAR
-	
-	stSystem	:	sysType;                  // SYSTEM DATA STRUCT
-	EMERGENCY_HDL	: FB_EMERGENCY_SYS;		  // EMERGENCY HANDLING FUNCTION BLOCK	
-	RPi_WATCHDOG	: FB_RPi_WATCHDOG;
+    stSystem        : sysType;
+    EMERGENCY_HDL   : FB_EMERGENCY_SYS;
+    RPi_WATCHDOG    : FB_RPi_WATCHDOG;
+    STEPPER_CTRL    : FB_STEPPER_CTRL;
 
-
-// Atributos para exponer las variables al servidor OPC UA
-    {attribute 'OPC.UA.DA' := '1'}
-    aImageRxBuffer : ARRAY[0..99999] OF BYTE; // Buffer para recibir desde la RPi (Ej: 100 KB)
-    
-    {attribute 'OPC.UA.DA' := '1'}
-    aImageTxBuffer : ARRAY[0..99999] OF BYTE; // Buffer para enviar a la RPi
-    
-    // Variables de control (Handshake)
-    {attribute 'OPC.UA.DA' := '1'}
-    bRpiHasWritten : BOOL; // La RPi lo pone en TRUE cuando termina de enviar
-    
-    {attribute 'OPC.UA.DA' := '1'}
-    bPlcHasWritten : BOOL; // El PLC lo pone en TRUE cuando tiene una imagen lista para la RPi
+    tonPause        : TON;
+    bOpening        : BOOL := TRUE;
+    stepCount       : INT;
+    stepTarget      : INT := 133;
+	bPulse_Prev : BOOL;
 
 END_VAR
-
-
-
-]]></Declaration>
+	]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-
-EMERGENCY_HDL(stSystem := stSystem);
+      <ST><![CDATA[EMERGENCY_HDL(stSystem := stSystem);
 RPi_WATCHDOG(stSystem := stSystem);
-]]></ST>
+
+// Cuenta los pulsos
+//IF stSystem.outputs.oMotorPulse THEN
+  //  stepCount := stepCount + 1;
+//END_IF
+IF stSystem.outputs.oMotorPulse AND NOT bPulse_Prev THEN
+    stepCount := stepCount + 1;
+END_IF
+bPulse_Prev := stSystem.outputs.oMotorPulse;
+
+// Cuando llega al target, pausa 1 segundo y cambia dirección
+tonPause(IN := (stepCount >= stepTarget), PT := T#1S);
+IF tonPause.Q THEN
+    bOpening  := NOT bOpening;
+    stepCount := 0;
+    tonPause(IN := FALSE);
+END_IF
+
+// Llama al motor
+STEPPER_CTRL(
+    bOpen   := bOpening AND (stepCount < stepTarget),
+    bClose  := NOT bOpening AND (stepCount < stepTarget),
+    bEnable := TRUE,
+    bPulse  => stSystem.outputs.oMotorPulse,
+    bDir    => stSystem.outputs.oMotorDir
+);]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

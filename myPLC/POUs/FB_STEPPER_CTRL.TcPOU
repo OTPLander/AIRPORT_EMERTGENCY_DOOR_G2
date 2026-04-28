@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+  <POU Name="FB_STEPPER_CTRL" Id="{7dde310d-6168-434d-9d6c-d5f3ca1b6152}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_STEPPER_CTRL
+VAR_INPUT
+    bOpen   : BOOL;
+    bClose  : BOOL;
+    bEnable : BOOL;
+END_VAR
+VAR_OUTPUT
+    bPulse  : BOOL;
+    bDir    : BOOL;
+END_VAR
+VAR
+    tonON   : TON;
+    tonOFF  : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bEnable AND (bOpen OR bClose) THEN
+
+    // Timer ON: espera 10ms, luego sube el pulso
+    tonON(IN := NOT bPulse, PT := T#1MS);
+    IF tonON.Q THEN
+        bPulse := TRUE;
+    END_IF
+
+    // Timer OFF: cuando el pulso está alto, espera 10ms y lo baja
+    tonOFF(IN := bPulse, PT := T#1MS);
+    IF tonOFF.Q THEN
+        bPulse := FALSE;
+    END_IF
+
+    // Dirección según qué salida está activa
+    bDir := bOpen;
+
+ELSE
+    // Motor parado: reset todo
+    bPulse := FALSE;
+    bDir   := FALSE;
+    tonON(IN := FALSE);
+    tonOFF(IN := FALSE);
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
