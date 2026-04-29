@@ -8,10 +8,10 @@ STRUCT
 	oCloseDoor	AT %Q*: BOOL;
 	oOpenDoor	AT %Q*: BOOL;
 	
-// MOTOR NEMA17 / TB6600
+	// MOTOR NEMA17 / TB6600
     oMotorPulse AT %Q*: BOOL;   // → PUL- del TB6600
     oMotorDir   AT %Q*: BOOL;   // → DIR- del TB6600
-	
+
 	
 END_STRUCT
 END_TYPE

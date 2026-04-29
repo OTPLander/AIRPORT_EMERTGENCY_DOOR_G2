@@ -28,6 +28,19 @@ STRUCT
     T23 : BOOL;
     T24 : BOOL;
     T25 : BOOL;
+    T26 : BOOL;
+    T27 : BOOL;
+    T28 : BOOL;
+    T29 : BOOL;
+    T30 : BOOL;
+    T31 : BOOL;
+    T32 : BOOL;
+    T33 : BOOL;
+    T34 : BOOL;
+    T35 : BOOL;
+    T36 : BOOL;
+    T37 : BOOL;
+
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

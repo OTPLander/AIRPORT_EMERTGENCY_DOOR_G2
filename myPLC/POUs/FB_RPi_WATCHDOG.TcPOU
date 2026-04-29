@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_RPi_WATCHDOG" Id="{6d7bce53-8afd-42cc-a4e4-b4f3a0647c22}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_RPi_WATCHDOG
 VAR
@@ -24,7 +24,8 @@ fbWatchdog(IN := (stSystem.RPiWatchdog.iHeartbeat = iHeartbeat_Prev), PT := T#3S
 
 // If timer runs out
 IF fbWatchdog.Q THEN
-    bRaspberryFail := TRUE; 
+    //bRaspberryFail := TRUE; 
+	
 ELSE
     bRaspberryFail := FALSE;
 END_IF

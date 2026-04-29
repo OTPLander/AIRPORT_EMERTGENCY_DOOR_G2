@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
-  <POU Name="FB_STEPPER_CTRL" Id="{7dde310d-6168-434d-9d6c-d5f3ca1b6152}" SpecialFunc="None">
+  <POU Name="FB_STEPPER_CTRL" Id="{b6bef221-dc65-4fbd-b7c2-2183fcac3dda}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_STEPPER_CTRL
 VAR_INPUT
     bOpen   : BOOL;
@@ -15,6 +15,7 @@ VAR
     tonON   : TON;
     tonOFF  : TON;
 END_VAR
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bEnable AND (bOpen OR bClose) THEN
@@ -40,7 +41,8 @@ ELSE
     bDir   := FALSE;
     tonON(IN := FALSE);
     tonOFF(IN := FALSE);
-END_IF]]></ST>
+END_IF
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
