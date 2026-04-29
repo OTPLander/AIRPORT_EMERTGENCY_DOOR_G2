@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="alarm_global" Id="{f18181b9-1ca7-48e4-ba5a-5208b7c0798d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	activate_alarm_global : BOOL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

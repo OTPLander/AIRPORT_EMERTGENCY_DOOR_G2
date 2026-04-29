@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_EMERGENCY_SYS" Id="{037855c0-4683-4fd0-aa20-772e94d3b895}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EMERGENCY_SYS
 VAR_IN_OUT
@@ -7,8 +7,7 @@ VAR_IN_OUT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-CASE stSystem.state OF
+      <ST><![CDATA[CASE stSystem.state OF
 
     // ==========================================
     // INITIAL STATES
@@ -51,6 +50,8 @@ CASE stSystem.state OF
     sysState.stAlarmOpening:
         IF stSystem.transitions.T15 THEN
             stSystem.state := sysState.stAlarm;
+        ELSIF stSystem.transitions.T37 THEN
+            stSystem.state := sysState.stAlarmClosing;
         END_IF
 
     sysState.stAlarm:
@@ -61,6 +62,12 @@ CASE stSystem.state OF
     sysState.stAlarmClosing:
         IF stSystem.transitions.T17 THEN
             stSystem.state := sysState.stWaitingRaspberry;
+        ELSIF stSystem.transitions.T26 THEN
+            stSystem.state := sysState.stAlarmOpening;
+        ELSIF stSystem.transitions.T27 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmOpening;
+        ELSIF stSystem.transitions.T28 THEN
+            stSystem.state := sysState.stConfigOpening;
         END_IF
 
     // ==========================================
@@ -69,6 +76,8 @@ CASE stSystem.state OF
     sysState.stFaceDetectionAlarmOpening:
         IF stSystem.transitions.T18 THEN
             stSystem.state := sysState.stFaceDetectionAlarm;
+        ELSIF stSystem.transitions.T35 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmClosing;
         END_IF
 
     sysState.stFaceDetectionAlarm:
@@ -79,6 +88,12 @@ CASE stSystem.state OF
     sysState.stFaceDetectionAlarmClosing:
         IF stSystem.transitions.T20 THEN
             stSystem.state := sysState.stWaitingRaspberry;
+        ELSIF stSystem.transitions.T29 THEN
+            stSystem.state := sysState.stAlarmOpening;
+        ELSIF stSystem.transitions.T30 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmOpening;
+        ELSIF stSystem.transitions.T31 THEN
+            stSystem.state := sysState.stConfigOpening;
         END_IF
 
     // ==========================================
@@ -87,6 +102,8 @@ CASE stSystem.state OF
     sysState.stConfigOpening:
         IF stSystem.transitions.T21 THEN
             stSystem.state := sysState.stConfig;
+        ELSIF stSystem.transitions.T36 THEN
+            stSystem.state := sysState.stConfigClosing;
         END_IF
 
     sysState.stConfig:
@@ -97,6 +114,12 @@ CASE stSystem.state OF
     sysState.stConfigClosing:
         IF stSystem.transitions.T23 THEN
             stSystem.state := sysState.stWaitingRaspberry;
+        ELSIF stSystem.transitions.T32 THEN
+            stSystem.state := sysState.stAlarmOpening;
+        ELSIF stSystem.transitions.T33 THEN
+            stSystem.state := sysState.stFaceDetectionAlarmOpening;
+        ELSIF stSystem.transitions.T34 THEN
+            stSystem.state := sysState.stConfigOpening;
         END_IF
 
     // ==========================================
@@ -140,7 +163,7 @@ stSystem.outputs.oCloseDoor :=
     (stSystem.state = sysState.stConfigClosing);
 
 // --- oAlarm: active during any alarm state (both alarm types, all sub-states) ---
-stSystem.outputs.oAlarm :=
+alarm_global.activate_alarm_global :=
     (stSystem.state = sysState.stAlarmOpening) OR
     (stSystem.state = sysState.stAlarm) OR
     (stSystem.state = sysState.stAlarmClosing) OR
@@ -166,19 +189,32 @@ END_VAR
 //              based on the current state and specific logical conditions.
 // ==============================================================================
 
-stSystem.inputs.iReedSwitch_rtrig(CLK := stSystem.inputs.iReedSwitch); // Define R_TRIG CLK for Reed Switch
-stSystem.inputs.iReedSwitch_rtrig2(CLK := stSystem.inputs.iReedSwitch2);
+stSystem.inputs.limitSwitchClose_rtrig(CLK := stSystem.inputs.ilimitSwitchClose_preRtrig, Q => stSystem.inputs.ilimitSwitchClose);
+stSystem.inputs.limitSwitchOpen_rtrig(CLK := stSystem.inputs.ilimitSwitchOpen_preRtrig, Q => stSystem.inputs.ilimitSwitchOpen);
 
+stSystem.inputs.iAlarmButton_ftrig(CLK:= stSystem.inputs.iAlarmButton_preFtrig,Q => stSystem.inputs.iAlarmButton);
+stSystem.inputs.iTestButton_rtrig(CLK:= stSystem.inputs.iTestButton_preRtrig, Q => stSystem.inputs.iTestbutton);
+
+stSystem.timersCounters.alarmButtonTImer(
+	 IN := NOT stSystem.inputs.iAlarmButton_preFtrig,
+	 PT := T#5S,
+	 Q => stSystem.inputs.iHoldAlarm
+);
+stSystem.timersCounters.testButtonTimer(
+	IN := stSystem.inputs.iTestButton_preRtrig, 
+	PT := T#5S, 
+	Q => stSystem.inputs.iHoldTest
+);
 
 
 // Transition T1: FROM stDisconnected TO stClosing WHEN iSwitch is TRUE
 stSystem.transitions.T1 := (stSystem.state = sysState.stDisconnected) AND (stSystem.inputs.iSwitch = TRUE);
 
 // Transition T2: FROM stOpening TO stDisconnected WHEN doorOpenTimer is done
-stSystem.transitions.T2 := (stSystem.state = sysState.stOpening) AND (stSystem.inputs.iReedSwitch2 = TRUE);
+stSystem.transitions.T2 := (stSystem.state = sysState.stOpening) AND (stSystem.inputs.ilimitSwitchOpen = TRUE);
 
 // Transition T3: FROM stClosing TO stWaitingRaspberry WHEN doorCloseTimer is done
-stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
+stSystem.transitions.T3 := (stSystem.state = sysState.stClosing) AND (stSystem.inputs.ilimitSwitchClose = TRUE);
 
 // Transition T4: FROM stWaitingRaspberry TO stOpening WHEN iSwitch is FALSE
 stSystem.transitions.T4 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iSwitch = FALSE);
@@ -190,84 +226,84 @@ stSystem.transitions.T5 := (stSystem.state = sysState.stWaitingRaspberry) AND (s
 
 
 // T7: FROM stWaitingRaspberry TO stAlarmOpening WHEN alarm button pressed
-stSystem.transitions.T7 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T7 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T8: FROM stWaitingRaspberry TO stFaceDetectionAlarmOpening WHEN face detected
 stSystem.transitions.T8 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iFacialDetec = TRUE);
  	
 // T9: FROM stWaitingRaspberry TO stConfigOpening WHEN test button pressed
-stSystem.transitions.T9 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iTestButton = TRUE);
+stSystem.transitions.T9 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iHoldTest = TRUE);
 
 
 
 // T15: FROM stAlarmOpening TO stAlarm WHEN doorOpenTimer done
-stSystem.transitions.T15 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.iReedSwitch_rtrig2.Q = TRUE);
+stSystem.transitions.T15 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.ilimitSwitchOpen = TRUE);
 
 // T16: FROM stAlarm TO stAlarmClosing WHEN test button AND alarm cleared
-stSystem.transitions.T16 := (stSystem.state = sysState.stAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T16 := (stSystem.state = sysState.stAlarm) AND (stSystem.inputs.iTestButton_preRtrig = TRUE) AND (stSystem.inputs.iAlarmButton_preFtrig = TRUE);
 
 // T17: FROM stAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T17 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
+stSystem.transitions.T17 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.ilimitSwitchClose = TRUE);
 
 // T18: FROM stFaceDetectionAlarmOpening TO stFaceDetectionAlarm WHEN doorOpenTimer done
-stSystem.transitions.T18 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.iReedSwitch_rtrig2.Q = TRUE);
+stSystem.transitions.T18 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.ilimitSwitchOpen = TRUE);
 
 // T19: FROM stFaceDetectionAlarm TO stFaceDetectionAlarmClosing WHEN test button AND alarm cleared
-stSystem.transitions.T19 := (stSystem.state = sysState.stFaceDetectionAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T19 := (stSystem.state = sysState.stFaceDetectionAlarm) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = TRUE);
 
 // T20: FROM stFaceDetectionAlarmClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T20 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
+stSystem.transitions.T20 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.ilimitSwitchClose = TRUE);
 
 // T21: FROM stConfigOpening TO stConfig WHEN doorOpenTimer done
-stSystem.transitions.T21 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.iReedSwitch_rtrig2.Q = TRUE);
+stSystem.transitions.T21 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.ilimitSwitchOpen = TRUE);
 
 // T22: FROM stConfig TO stConfigClosing WHEN test button pressed
 stSystem.transitions.T22 := (stSystem.state = sysState.stConfig) AND (stSystem.inputs.iTestButton = TRUE);
 
 // T23: FROM stConfigClosing TO stWaitingRaspberry WHEN doorCloseTimer done
-stSystem.transitions.T23 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iReedSwitch_rtrig.Q = TRUE);
+stSystem.transitions.T23 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.ilimitSwitchClose= TRUE);
 
 // T24: FROM stRaspberryFailOpening TO stRaspberryFail WHEN doorOpenTimer done
-stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) AND (stSystem.inputs.iReedSwitch_rtrig2.Q = TRUE);
+stSystem.transitions.T24 := (stSystem.state = sysState.stRaspberryFailOpening) AND (stSystem.inputs.ilimitSwitchOpen = TRUE);
 
 // T25: FROM stRaspberryFail TO stDisconnected WHEN iSwitch is FALSE
 stSystem.transitions.T25 := (stSystem.state = sysState.stRaspberryFail) AND (stSystem.inputs.iSwitch = FALSE);
 
 // T26: FROM stAlarmClosing TO stAlarmOpening WHEN alarm button pressed
-stSystem.transitions.T26 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T26 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T27: FROM stAlarmClosing TO stFaceDetectionAlarmOpening WHEN face detected
 stSystem.transitions.T27 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iFacialDetec = TRUE);
 
 // T28: FROM stAlarmClosing TO stConfigOpening WHEN test button pressed
-stSystem.transitions.T28 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iTestButton = TRUE);
+stSystem.transitions.T28 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iHoldTest = TRUE);
 
 // T29: FROM stFaceDetectionAlarmClosing TO stAlarmOpening WHEN alarm button pressed
-stSystem.transitions.T29 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T29 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T30: FROM stFaceDetectionAlarmClosing TO stFaceDetectionAlarmOpening WHEN face detected
 stSystem.transitions.T30 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iFacialDetec = TRUE);
 
 // T31: FROM stFaceDetectionAlarmClosing TO stConfigOpening WHEN test button pressed
-stSystem.transitions.T31 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iTestButton = TRUE);
+stSystem.transitions.T31 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iHoldTest = TRUE);
 
 // T32: FROM stConfigClosing TO stAlarmOpening WHEN alarm button pressed
-stSystem.transitions.T32 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T32 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T33: FROM stConfigClosing TO stFaceDetectionAlarmOpening WHEN face detected
 stSystem.transitions.T33 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iFacialDetec = TRUE);
 
 // T34: FROM stConfigClosing TO stConfigOpening WHEN test button pressed
-stSystem.transitions.T34 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iTestButton = TRUE);
+stSystem.transitions.T34 := (stSystem.state = sysState.stConfigClosing) AND (stSystem.inputs.iHoldTest = TRUE);
 
 // T35: FROM stFaceDetectionAlarmOpening TO stFaceDetectionAlarmClosing WHEN test button AND alarm cleared
-stSystem.transitions.T35 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T35 := (stSystem.state = sysState.stFaceDetectionAlarmOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = TRUE);
 
 // T36: FROM stConfigOpening TO stConfigClosing WHEN test button AND alarm cleared
-stSystem.transitions.T36 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T36 := (stSystem.state = sysState.stConfigOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = TRUE);
 
 // T37: FROM stAlarmOpening TO stAlarmClosing WHEN test button AND alarm cleared
-stSystem.transitions.T37 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = FALSE);
+stSystem.transitions.T37 := (stSystem.state = sysState.stAlarmOpening) AND (stSystem.inputs.iTestButton = TRUE) AND (stSystem.inputs.iAlarmButton = TRUE);
 
 
 ]]></ST>

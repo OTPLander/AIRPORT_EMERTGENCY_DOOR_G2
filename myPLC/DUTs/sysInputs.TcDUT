@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <DUT Name="sysInputs" Id="{3a073515-8c62-4025-bb33-ff158228b7a2}">
     <Declaration><![CDATA[TYPE sysInputs :
 STRUCT
@@ -7,14 +7,36 @@ STRUCT
 	
 	iSwitch		 AT %I*: BOOL;
 
-	iAlarmButton AT %I*: BOOL;
-	iFacialDetec AT %I*: BOOL;
-	iTestButton	 AT %I*: BOOL;
 	
-	iReedSwitch	 AT %I*: BOOL;
-	iReedSwitch2	 AT %I*: BOOL;
-iReedSwitch_rtrig : R_TRIG;   // stop limit cierre
-    iReedSwitch_rtrig2 : R_TRIG;   // stop limit apertura	
+	iFacialDetec AT %I*: BOOL;
+	
+	iAlarmButton_ftrig : F_TRIG;
+	iTestButton_rtrig	 : R_TRIG;
+	
+	iAlarmButton : BOOL;
+	iTestbutton: BOOL;
+	
+	iAlarmButton_preFtrig AT %I*: BOOL;
+	iTestButton_preRtrig AT %I*: BOOL;
+	
+	iHoldAlarm : BOOL;
+	iHoldTest : BOOL;
+	
+
+	
+	limitSwitchOpen_rtrig : F_TRIG;
+	limitSwitchClose_rtrig : R_TRIG;
+	
+	ilimitSwitchOpen : BOOL;
+	ilimitSwitchClose: BOOL;
+	
+	ilimitSwitchOpen_preRtrig AT %I* : BOOL;
+	ilimitSwitchClose_preRtrig AT %I* : BOOL;
+	
+	
+	
+
+	
 END_STRUCT
 END_TYPE
 ]]></Declaration>

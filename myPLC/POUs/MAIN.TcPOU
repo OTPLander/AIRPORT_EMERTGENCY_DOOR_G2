@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="MAIN" Id="{1185f6f7-1cbe-454c-8e29-f938133bda08}" SpecialFunc="None">
     <Declaration><![CDATA[// /////////////////////////////////////////////////////////////////////////////
 // ///                                                                       ///
@@ -51,30 +51,19 @@ END_VAR
       <ST><![CDATA[EMERGENCY_HDL(stSystem := stSystem);
 RPi_WATCHDOG(stSystem := stSystem);
 EMERGENCY_HDL.mTransitions(stSystem := stSystem);
+EMERGENCY_HDL.mOutputs(stSystem := stSystem);
 
-// 1. Evaluamos si la máquina de estados está en un estado de APERTURA
-bIsOpening := (stSystem.state = sysState.stOpening) OR
-              (stSystem.state = sysState.stAlarmOpening) OR
-              (stSystem.state = sysState.stFaceDetectionAlarmOpening) OR
-              (stSystem.state = sysState.stConfigOpening) OR
-              (stSystem.state = sysState.stRaspberryFailOpening);
-
-// 2. Evaluamos si la máquina de estados está en un estado de CIERRE
-bIsClosing := (stSystem.state = sysState.stClosing) OR
-              (stSystem.state = sysState.stAlarmClosing) OR
-              (stSystem.state = sysState.stFaceDetectionAlarmClosing) OR
-              (stSystem.state = sysState.stConfigClosing);
-
-// 3. Llamada al controlador del motor paso a paso
-// El motor girará continuamente mientras bIsOpening o bIsClosing sean TRUE.
-// Se detendrá (reseteando pulsos) cuando la máquina pase a un estado estático (ej. stAlarm, stRaspberryOk, etc.)
 STEPPER_CTRL(
-    bOpen   := bIsOpening,
-    bClose  := bIsClosing,
-    bEnable := TRUE, // Puedes condicionar esto a (stSystem.state <> sysState.stDisconnected) si lo prefieres
+    bOpen   := stSystem.outputs.oOpenDoor,
+    bClose  := stSystem.outputs.oCloseDoor,
+    bEnable := NOT (stSystem.state = sysState.stDisconnected), 
     bPulse  => stSystem.outputs.oMotorPulse,
     bDir    => stSystem.outputs.oMotorDir
 );
+
+
+
+
 ]]></ST>
     </Implementation>
   </POU>

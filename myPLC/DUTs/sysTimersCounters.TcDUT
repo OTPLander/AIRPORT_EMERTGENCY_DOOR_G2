@@ -9,6 +9,11 @@ STRUCT
 	rpiPingTimer : TON;
 	rpiWaitTimer : TON;
 
+
+	testButtonTimer : TON;
+	alarmButtonTImer : TON; 
+	
+	
 	
 END_STRUCT
 
