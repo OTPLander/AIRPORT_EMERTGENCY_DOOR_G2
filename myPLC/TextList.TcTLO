@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+  <TextList Name="TextList" Id="{78e8b958-b3c2-4b77-8900-a2aad21c6e3e}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="TextListObject">
+          <v n="UniqueIdGenerator">"0"</v>
+          <l n="TextList" t="ArrayList" cet="TextListRow">
+            <o>
+              <v n="TextID">"1"</v>
+              <v n="TextDefault">"ESTADO DE LA ALARMA"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"2"</v>
+              <v n="TextDefault">"ABIERTO"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OPENED</v>
+                <v>ABIERTO</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"3"</v>
+              <v n="TextDefault">"ABRIENDO/
+CERRANDO"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>OPENING/
+CLOSING</v>
+                <v>ABRIENDO/
+CERRANDO</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"4"</v>
+              <v n="TextDefault">"CERRADO"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>CLOSED</v>
+                <v>CERRADO</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"5"</v>
+              <v n="TextDefault">"INTERRUPTOR"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>SWITCH</v>
+                <v>INTERRUPTOR</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"6"</v>
+              <v n="TextDefault">"ALARMA"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>ALARM</v>
+                <v>ALARMA</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"7"</v>
+              <v n="TextDefault">"CONFIGURACIÓN"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>CONFIGURATION</v>
+                <v>CONFIGURACIÓN</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"0"</v>
+              <v n="TextDefault">"CONECTAR
+/DESCONECTAR 
+PUERTA EMERGENCIA"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>CONNECT/
+DISCONNECT
+ EMERGENCY DOOR</v>
+                <v>CONECTAR/
+DESCONECTAR 
+PUERTA EMERGENCIA</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">"9"</v>
+              <v n="TextDefault">"PUERTA DE EMERGENCIA"</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v>EMERGENCY DOOR</v>
+                <v>PUERTA DE EMERGENCIA</v>
+              </l>
+            </o>
+            <o>
+              <v n="TextID">""</v>
+              <v n="TextDefault">""</v>
+              <l n="LanguageTexts" t="ArrayList" cet="String">
+                <v></v>
+                <v></v>
+              </l>
+            </o>
+          </l>
+          <l n="Languages" t="ArrayList" cet="String">
+            <v>English</v>
+            <v>Spanish</v>
+          </l>
+          <v n="GuidInit">{16f045ac-7a63-43cf-b3d9-e13a26d3e204}</v>
+          <v n="GuidReInit">{fd269456-97d7-46ce-8636-a38bb4304475}</v>
+          <v n="GuidExitX">{2b52f330-b569-4a45-ac14-176a3c5bcb31}</v>
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextListObject">{2bef0454-1bd3-412a-ac2c-af0f31dbc40f}</Type>
+        <Type n="TextListRow">{53da1be7-ad25-47c3-b0e8-e26286dad2e0}</Type>
+      </TypeList>
+    </XmlArchive>
+    <ObjectProperties>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="TextListPropertiesObject">
+            <v n="DownloadForVisu">false</v>
+            <v n="Internal">false</v>
+            <v n="DownloadForApplication">true</v>
+          </o>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="TextListPropertiesObject">{9db18249-9fcf-4264-a9de-410a659a36b3}</Type>
+        </TypeList>
+      </XmlArchive>
+    </ObjectProperties>
+  </TextList>
+</TcPlcObject>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_HMI_CTRL" Id="{14cfcfe0-9caf-453a-a57f-eee717b94396}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMI_CTRL
+VAR_IN_OUT
+    stSystem : sysType; 
+END_VAR
+VAR_OUTPUT
+    sImagenActual : STRING; // Image ID
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE stSystem.state OF
+    
+    // default
+    sysState.stDisconnected, sysState.stClosing, sysState.stOpening:
+        sImagenActual := 'opened';
+
+    // alarm
+    sysState.stWaitingRaspberry:
+        sImagenActual := 'closed';
+
+    // facial alamar
+    sysState.stFaceDetectionAlarmOpening, sysState.stFaceDetectionAlarm, sysState.stFaceDetectionAlarmClosing:
+        sImagenActual := 'terrorist';
+
+    // configuration state
+    sysState.stConfigOpening, sysState.stConfig, sysState.stConfigClosing:
+        sImagenActual := 'config';
+		
+	// hacked state
+    sysState.stRaspberryFailOpening, sysState.stRaspberryFail:
+        sImagenActual := 'hackeado';
+
+
+    sysState.stAlarmOpening, sysState.stAlarm, sysState.stAlarmClosing :
+        sImagenActual := 'alarm';
+
+ELSE
+    sImagenActual := '';
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

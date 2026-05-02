@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <DUT Name="sysInputs" Id="{3a073515-8c62-4025-bb33-ff158228b7a2}">
     <Declaration><![CDATA[TYPE sysInputs :
 STRUCT
 	
 	
-	iSwitch		 AT %I*: BOOL;
+	iSwitch_physical         AT %I*: BOOL;   // antes: iSwitch
+	iAlarmButton_preFtrig_physical AT %I*: BOOL;  // antes: iAlarmButton_preFtrig
+	iTestButton_preRtrig_physical  AT %I*: BOOL;  // antes: iTestButton_preRtrig
 
 	
 	iFacialDetec AT %I*: BOOL;
@@ -16,11 +18,11 @@ STRUCT
 	iAlarmButton : BOOL;
 	iTestbutton: BOOL;
 	
-	iAlarmButton_preFtrig AT %I*: BOOL;
-	iTestButton_preRtrig AT %I*: BOOL;
 	
 	iHoldAlarm : BOOL;
 	iHoldTest : BOOL;
+	iHoldAlarm_HMI: BOOL;
+	iHoldTest_HMI : BOOL;
 	
 
 	
@@ -33,8 +35,13 @@ STRUCT
 	ilimitSwitchOpen_preRtrig AT %I* : BOOL;
 	ilimitSwitchClose_preRtrig AT %I* : BOOL;
 	
-	
-	
+	//HMI VARIABLES
+	iSwitch_HMI          : BOOL;
+    iAlarmButton_HMI     : BOOL;
+    iTestButton_HMI      : BOOL;
+	iSwitch              : BOOL;
+	iAlarmButton_preFtrig: BOOL;
+	iTestButton_preRtrig : BOOL;
 
 	
 END_STRUCT

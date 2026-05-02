@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_STEPPER_CTRL" Id="{b6bef221-dc65-4fbd-b7c2-2183fcac3dda}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_STEPPER_CTRL
 VAR_INPUT
@@ -20,23 +20,23 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF bEnable AND (bOpen OR bClose) THEN
 
-    // Timer ON: espera 10ms, luego sube el pulso
+    // Timer ON: wait 10 ms, then pulse
     tonON(IN := NOT bPulse, PT := T#1MS);
     IF tonON.Q THEN
         bPulse := TRUE;
     END_IF
 
-    // Timer OFF: cuando el pulso está alto, espera 10ms y lo baja
+    // Timer OFF: when pulse is ready, wait 10 ms and quit
     tonOFF(IN := bPulse, PT := T#1MS);
     IF tonOFF.Q THEN
         bPulse := FALSE;
     END_IF
 
-    // Dirección según qué salida está activa
+    // Direction, depending on what is activated
     bDir := bOpen;
 
 ELSE
-    // Motor parado: reset todo
+    // Reset when motor is stopped
     bPulse := FALSE;
     bDir   := FALSE;
     tonON(IN := FALSE);

@@ -12,6 +12,11 @@ STRUCT
     oMotorPulse AT %Q*: BOOL;   // → PUL- del TB6600
     oMotorDir   AT %Q*: BOOL;   // → DIR- del TB6600
 
+	//
+	oLightGreen  : BOOL;
+	oLightOrange : BOOL;
+	oLightRed    : BOOL;
+
 	
 END_STRUCT
 END_TYPE

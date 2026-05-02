@@ -10,18 +10,17 @@ TYPE sysState :
     stOpening := 1,
     stClosing := 2,
     stWaitingRaspberry := 3,
-    stRaspberryOk := 4,
-    stAlarmOpening := 5,
-    stAlarm := 6,
-    stAlarmClosing := 7,
-    stFaceDetectionAlarmOpening := 8,
-    stFaceDetectionAlarm := 9,
-    stFaceDetectionAlarmClosing := 10,
-    stConfigOpening := 11,
-    stConfig := 12,
-    stConfigClosing := 13,
-    stRaspberryFailOpening := 14,
-    stRaspberryFail := 15
+    stAlarmOpening := 4,
+    stAlarm := 5,
+    stAlarmClosing := 6,
+    stFaceDetectionAlarmOpening := 7,
+    stFaceDetectionAlarm := 8,
+    stFaceDetectionAlarmClosing := 9,
+    stConfigOpening := 10,
+    stConfig := 11,
+    stConfigClosing := 12,
+    stRaspberryFailOpening := 13,
+    stRaspberryFail := 14
 );
 END_TYPE]]></Declaration>
   </DUT>

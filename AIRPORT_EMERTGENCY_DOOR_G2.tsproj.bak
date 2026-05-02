@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.21">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.18">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-002000000008}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BYTE</Name>
@@ -11,7 +11,7 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
 			<BitSize>4</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -43,11 +43,14 @@
 				<Task Id="4" Priority="1" CycleTime="10000" AmsPort="351" AdtTasks="true">
 					<Name>PWM</Name>
 				</Task>
+				<Task Id="5" Priority="30" CycleTime="2000000" AmsPort="352" DisableFpExceptions="true" AdtTasks="true">
+					<Name>VISU_TASK</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
 			<Project GUID="{0BC24E2F-63E9-4D97-8436-7444818F97D7}" Name="myPLC" PrjFilePath="myPLC\myPLC.plcproj" TmcFilePath="myPLC\myPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" CopyTpyToTarget="false">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{6FA6EB8B-B5A2-263C-25D7-5F4BE423F5DC}" TmcPath="myPLC\myPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{52718FF7-53F5-036E-4B54-2B9410EEFC10}" TmcPath="myPLC\myPLC.tmc">
 					<Name>myPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -78,19 +81,22 @@
 					<Vars VarGrpType="1" ContextId="1" AreaNo="16">
 						<Name>PlcTask_1 Inputs</Name>
 						<Var>
-							<Name>MAIN.stSystem.inputs.iSwitch</Name>
+							<Name>MAIN.stSystem.inputs.iSwitch_physical</Name>
+							<Comment><![CDATA[ antes: iSwitch]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.stSystem.inputs.iAlarmButton_preFtrig_physical</Name>
+							<Comment><![CDATA[ antes: iAlarmButton_preFtrig]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.stSystem.inputs.iTestButton_preRtrig_physical</Name>
+							<Comment><![CDATA[ antes: iTestButton_preRtrig]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.stSystem.inputs.iFacialDetec</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.stSystem.inputs.iAlarmButton_preFtrig</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.stSystem.inputs.iTestButton_preRtrig</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -114,6 +120,15 @@
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>
+					<UnrestoredVarLinks ImportTime="2026-04-30T15:15:53">
+						<OwnerA Name="InputDst" Prefix="TIPC^myPLC^myPLC Instance" Type="1">
+							<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1008)">
+								<Link VarA="MAIN.stSystem.inputs.iAlarmButton_preFtrig" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 7^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.stSystem.inputs.iSwitch" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 3^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.stSystem.inputs.iTestButton_preRtrig" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 5^Input" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
@@ -607,9 +622,9 @@
 				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oMotorPulse" VarB="Channel 8^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1008)">
-				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iAlarmButton_preFtrig" VarB="Channel 7^Input"/>
-				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iSwitch" VarB="Channel 3^Input"/>
-				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iTestButton_preRtrig" VarB="Channel 5^Input"/>
+				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iAlarmButton_preFtrig_physical" VarB="Channel 7^Input"/>
+				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iSwitch_physical" VarB="Channel 3^Input"/>
+				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.iTestButton_preRtrig_physical" VarB="Channel 5^Input"/>
 				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.ilimitSwitchClose_preRtrig" VarB="Channel 8^Input"/>
 				<Link VarA="PlcTask_1 Inputs^MAIN.stSystem.inputs.ilimitSwitchOpen_preRtrig" VarB="Channel 4^Input"/>
 			</OwnerB>
