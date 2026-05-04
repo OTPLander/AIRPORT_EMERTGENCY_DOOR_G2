@@ -50,7 +50,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{0BC24E2F-63E9-4D97-8436-7444818F97D7}" Name="myPLC" PrjFilePath="myPLC\myPLC.plcproj" TmcFilePath="myPLC\myPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" CopyTpyToTarget="false">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{70E22929-62C6-6227-3D4D-574288E436D6}" TmcPath="myPLC\myPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{20CC24A6-D4BE-56ED-DF8F-D688DBE42BAF}" TmcPath="myPLC\myPLC.tmc">
 					<Name>myPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -93,10 +93,6 @@
 						<Var>
 							<Name>MAIN.stSystem.inputs.iTestButton_preRtrig_physical</Name>
 							<Comment><![CDATA[ antes: iTestButton_preRtrig]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.stSystem.inputs.iFacialDetec</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -618,6 +614,7 @@
 		<OwnerA Name="TIPC^myPLC^myPLC Instance">
 			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2008)">
 				<Link VarA="PlcTask Outputs^PWM.bAlarmaOut" VarB="Channel 6^Output"/>
+				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oAlarm" VarB="Channel 4^Output"/>
 				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oMotorDir" VarB="Channel 7^Output"/>
 				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oMotorPulse" VarB="Channel 8^Output"/>
 			</OwnerB>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.18">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.21">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-002000000008}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..0] OF BYTE</Name>
@@ -11,7 +11,7 @@
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000004}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..3] OF BIT</Name>
 			<BitSize>4</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -50,7 +50,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{0BC24E2F-63E9-4D97-8436-7444818F97D7}" Name="myPLC" PrjFilePath="myPLC\myPLC.plcproj" TmcFilePath="myPLC\myPLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" CopyTmcToTarget="true" CopyTpyToTarget="false">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{52718FF7-53F5-036E-4B54-2B9410EEFC10}" TmcPath="myPLC\myPLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{548EA3D7-2579-CF63-004E-56F86B4A71B8}" TmcPath="myPLC\myPLC.tmc">
 					<Name>myPLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" ContextId="1" AreaNo="17">
@@ -93,10 +93,6 @@
 						<Var>
 							<Name>MAIN.stSystem.inputs.iTestButton_preRtrig_physical</Name>
 							<Comment><![CDATA[ antes: iTestButton_preRtrig]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.stSystem.inputs.iFacialDetec</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -618,6 +614,7 @@
 		<OwnerA Name="TIPC^myPLC^myPLC Instance">
 			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL2008)">
 				<Link VarA="PlcTask Outputs^PWM.bAlarmaOut" VarB="Channel 6^Output"/>
+				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oAlarm" VarB="Channel 4^Output"/>
 				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oMotorDir" VarB="Channel 7^Output"/>
 				<Link VarA="PlcTask_1 Outputs^MAIN.stSystem.outputs.oMotorPulse" VarB="Channel 8^Output"/>
 			</OwnerB>

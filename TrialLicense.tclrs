@@ -2,9 +2,24 @@
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
 		<SystemId>{F4907467-5EDE-A97E-71A9-775FAD44298D}</SystemId>
-		<IssueTime>2026-04-21T12:50:00</IssueTime>
-		<ExpireTime>2026-04-29T00:00:00</ExpireTime>
-		<LicenseKey>8a6d54d3c5ed739f0e9b9c026b8bc8bfc04c68e976c6b069ed4193cdc9dcfd621935d92db419fb798e7bdd510498f0543d84f6f10735d17c449a39e08f15ddc03de9cdc07d015514b1c57fc2535e0020a4a88a9eeb408288f79fe21ec865c6cd9af8805dbada0a0c46aa87986c2fd160e0e1f3ca76bc6a1c94c09436b7a7ea1a8293ce06252b8e7748b7e83ae90af04df6d2c4e7c326b07d2724c28fe27d00211cf09172ac2769e95771c18277c7cc6ceb573dbe981c43bd1e7914fe36408a456af5f86334046571d63ec18b76d2040c751f6a3fb056dac297649d0f753ee715da6072ad15bd847555cf1acdce51abc052d6535de2a2fca4bc4ec9d5dd1fab51</LicenseKey>
+		<IssueTime>2026-05-04T13:57:00</IssueTime>
+		<ExpireTime>2026-05-12T00:00:00</ExpireTime>
+		<LicenseKey>7ee062563581bfcddfa5b1107ca1b1e79e14dd4bf44566b0944393bdf0070ea8e8a908f088941e81406f0df079b04179c7266ecaabf2e483168ea8340ee4e906c270247903ef9184197c8cc2a8e0b51f869d82fd3784025787e1fee8a510af1e21f4759cc0ad0094194eab5629873c35305e846226d62a35119effe2bcf41bb8648927612e9694fab06794b8f901e8d8133f13b507df12901a1beb86cf6afab11e96a5a391ddecfb844834ca99ceccfa6626d35d6e14f5878a01738b730c9c38a57ca0d27c05694b8c24e810cbcf19821751515c0844540625731e2259f3f7350842cbfc3029866594d7e00fe0e476922574b81e64ffbedb05184b8c50e0f4d9</LicenseKey>
+		<License>
+			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
+			<Name>TC3 ADS</Name>
+			<OrderNo>TC1000</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
+			<Name>TC3 IO</Name>
+			<OrderNo>TC1100</OrderNo>
+		</License>
+		<License>
+			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
+			<Name>TC3 PLC</Name>
+			<OrderNo>TC1200</OrderNo>
+		</License>
 		<License>
 			<LicenseId>{CC0BCBD5-3EA7-D7D4-4C71-A8B125F0DB72}</LicenseId>
 			<Name>TC3 OPC-UA Analytics Read</Name>
@@ -22,21 +37,6 @@
 			<LicenseId>{AB888AB9-F2E3-43AE-8FAA-E294BDCE1FEA}</LicenseId>
 			<Name>TC3 OPC UA Nodeset Editor L1</Name>
 			<OrderNo>TE6100</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
-			<Name>TC3 ADS</Name>
-			<OrderNo>TC1000</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{66689887-CCBD-452C-AC9A-039D997C6E66}</LicenseId>
-			<Name>TC3 PLC</Name>
-			<OrderNo>TC1200</OrderNo>
-		</License>
-		<License>
-			<LicenseId>{3FF18E97-7754-401B-93FB-70544DE28A13}</LicenseId>
-			<Name>TC3 IO</Name>
-			<OrderNo>TC1100</OrderNo>
 		</License>
 	</LicenseInfo>
 </TcLicenseInfo>

@@ -75,6 +75,7 @@ END_VAR
     // ==========================================
     sysState.stFaceDetectionAlarmOpening:
         IF stSystem.transitions.T18 THEN
+			stSystem.inputs.iFacialDetec := FALSE;
             stSystem.state := sysState.stFaceDetectionAlarm;
         ELSIF stSystem.transitions.T35 THEN
             stSystem.state := sysState.stFaceDetectionAlarmClosing;
@@ -249,6 +250,9 @@ stSystem.timersCounters.testButtonTimer_HMI(
     Q => stSystem.inputs.iHoldTest_HMI
 );
 
+stSystem.inputs.iFacialDetec_RTRIG(CLK := stSystem.inputs.iFacialDetec, Q => stSystem.inputs.iFacialDetec_Q);
+
+
 // Transition T1: FROM stDisconnected TO stClosing WHEN iSwitch is TRUE
 stSystem.transitions.T1 := (stSystem.state = sysState.stDisconnected) AND (stSystem.inputs.iSwitch = TRUE);
 
@@ -272,7 +276,7 @@ stSystem.transitions.T7 := (stSystem.state = sysState.stWaitingRaspberry)
     AND (stSystem.inputs.iHoldAlarm = TRUE OR stSystem.inputs.iHoldAlarm_HMI = TRUE);
 
 // T8: FROM stWaitingRaspberry TO stFaceDetectionAlarmOpening WHEN face detected
-stSystem.transitions.T8 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iFacialDetec = TRUE);
+stSystem.transitions.T8 := (stSystem.state = sysState.stWaitingRaspberry) AND (stSystem.inputs.iFacialDetec_Q = TRUE);
  	
 // T9: FROM stWaitingRaspberry TO stConfigOpening WHEN test button pressed
 stSystem.transitions.T9 := (stSystem.state = sysState.stWaitingRaspberry) 
@@ -320,7 +324,7 @@ stSystem.transitions.T25 := (stSystem.state = sysState.stRaspberryFail) AND (stS
 stSystem.transitions.T26 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T27: FROM stAlarmClosing TO stFaceDetectionAlarmOpening WHEN face detected
-stSystem.transitions.T27 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iFacialDetec = TRUE);
+stSystem.transitions.T27 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iFacialDetec_Q = TRUE);
 
 // T28: FROM stAlarmClosing TO stConfigOpening WHEN test button pressed
 stSystem.transitions.T28 := (stSystem.state = sysState.stAlarmClosing) AND (stSystem.inputs.iHoldTest = TRUE);
@@ -329,7 +333,7 @@ stSystem.transitions.T28 := (stSystem.state = sysState.stAlarmClosing) AND (stSy
 stSystem.transitions.T29 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iHoldAlarm = TRUE);
 
 // T30: FROM stFaceDetectionAlarmClosing TO stFaceDetectionAlarmOpening WHEN face detected
-stSystem.transitions.T30 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iFacialDetec = TRUE);
+stSystem.transitions.T30 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iFacialDetec_Q = TRUE);
 
 // T31: FROM stFaceDetectionAlarmClosing TO stConfigOpening WHEN test button pressed
 stSystem.transitions.T31 := (stSystem.state = sysState.stFaceDetectionAlarmClosing) AND (stSystem.inputs.iHoldTest = TRUE);
